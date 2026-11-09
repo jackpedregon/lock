@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Planner Privacy Policy</title>
+<style>
+  :root {
+    --bg: #f4f6f8; --card: #ffffff; --fg: #17202a; --muted: #5a6775; --line: #dfe4ea; --accent: #2f5fe0;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1419; --card: #18202a; --fg: #e9eef3; --muted: #9aa8b5; --line: #2a3542; --accent: #82a3ff; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto;
+         padding: max(32px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
+                  max(48px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); }
+  h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 6px; text-wrap: balance; }
+  h2 { font-size: 1.2rem; margin: 36px 0 8px; }
+  p, li { max-width: 65ch; }
+  .meta { color: var(--muted); margin: 0 0 24px; }
+  .summary { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .summary ul { margin: 0; padding-left: 20px; }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; background: var(--card); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  a { color: var(--accent); }
+  footer { margin-top: 40px; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy</h1>
+  <p class="meta">My Planner · Effective November 8, 2026</p>
+
+  <div class="summary">
+    <strong>The short version</strong>
+    <ul>
+      <li>Most of your information stays on your iPhone.</li>
+      <li>We only send information off your phone to make a feature you turned on work.</li>
+      <li>We don't sell your information, show ads, or track you across other apps and websites.</li>
+      <li>You can sign out, delete your account, or erase everything from inside the app at any time.</li>
+    </ul>
+  </div>
+
+  <h2>Who we are</h2>
+  <p>My Planner is an iPhone app for tasks, your calendar and focus time, made by Jack Pedregon ("we"). Questions about this policy: <a href="mailto:jack@pedregon.com">jack@pedregon.com</a>.</p>
+
+  <h2>What we collect and why</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Information</th><th>Where it's kept</th><th>Why</th></tr>
+    <tr><td>Tasks, categories, folders, focus history, all-day modes and settings</td><td>Only on your iPhone</td><td>To run the app</td></tr>
+    <tr><td>Calendar events</td><td>Read and written through the iPhone's Calendar, with your permission</td><td>To show your schedule and add tasks with due dates to your calendar</td></tr>
+    <tr><td>Your Canvas calendar feed link</td><td>Only on your iPhone, in the Keychain</td><td>To bring in your assignments. The app reads the feed straight from Canvas.</td></tr>
+    <tr><td>Google sign-in</td><td>Only on your iPhone, in the Keychain</td><td>To show your Google Calendar event colors and change the colors you pick. We don't use it for anything else.</td></tr>
+    <tr><td>Email address and password</td><td>Our server (hosted by Supabase). Passwords are stored hashed, never in readable form.</td><td>To sign you in to the assistant and friend lock</td></tr>
+    <tr><td>Assistant messages, photos you attach, and the tasks and events the assistant looks at</td><td>Passed through our server to Anthropic. We don't keep a copy.</td><td>To answer you and make the changes you ask for</td></tr>
+    <tr><td>Friend lock details: your name, what you're focusing on, start and end times, the type of phone that unlocked you, and network (IP) addresses</td><td>Our server, deleted within 7 days</td><td>To let your friend end a lock-in early, and to flag an unlock that came from your own Wi-Fi</td></tr>
+    <tr><td>Your lock friends' names and phone numbers</td><td>Only on your iPhone</td><td>To text them the unlock link. The text is sent by your iPhone's Messages app.</td></tr>
+    <tr><td>Voice chat audio</td><td>Turned into text by your iPhone (on the device when it supports it)</td><td>To let you talk to the assistant</td></tr>
+  </table>
+  </div>
+
+  <h2>Who else handles your information</h2>
+  <ul>
+    <li><strong>Supabase</strong> hosts our server and database. See the <a href="https://supabase.com/privacy">Supabase privacy policy</a>.</li>
+    <li><strong>Anthropic</strong> runs Claude, the model behind the assistant, and processes your assistant requests. See the <a href="https://www.anthropic.com/legal/privacy">Anthropic privacy policy</a>.</li>
+    <li><strong>Google</strong> provides calendar colors when you sign in with Google. See the <a href="https://policies.google.com/privacy">Google privacy policy</a>.</li>
+    <li><strong>Apple</strong> provides the Calendar, speech recognition, notifications and Screen Time features the app uses. See the <a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a>.</li>
+    <li><strong>GitHub</strong> hosts this page and the friend lock page. GitHub may log visits. See the <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>.</li>
+  </ul>
+  <p>We share information with these services only to run the features you use. We never sell it.</p>
+
+  <h2>Google user data</h2>
+  <p>My Planner's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. We use Google Calendar data only to show event colors and to change an event's color when you ask. We don't transfer it to anyone else, use it for ads, or let people read it.</p>
+
+  <h2>App blocking and Screen Time</h2>
+  <p>When app blocking is available, it uses Apple's Screen Time tools. Apple keeps the list of apps you choose on your iPhone and doesn't tell us which apps they are or how you use them.</p>
+
+  <h2>How long we keep things</h2>
+  <ul>
+    <li>Friend lock records: deleted within 7 days.</li>
+    <li>Your account: until you delete it in the app (Settings → Privacy &amp; Security → Delete My Account).</li>
+    <li>Everything on your iPhone: until you delete it, erase it in the app, or delete the app.</li>
+  </ul>
+
+  <h2>Your choices</h2>
+  <p>In the app, go to Settings → Privacy &amp; Security to sign out of everything, delete your account and the server's records about you, or erase everything the app saved on your iPhone. You can also turn off calendar, notification, microphone and other permissions any time in your iPhone's Settings, or email us to ask what we hold about you.</p>
+
+  <h2>Security</h2>
+  <p>Sign-ins and secret links are kept in the iPhone Keychain and aren't included in backups. Everything sent between the app and our server is encrypted (HTTPS). Our database blocks outside access, and the Claude API key is kept on the server, never in the app.</p>
+
+  <h2>Children</h2>
+  <p>My Planner isn't meant for children under 13, and we don't knowingly collect information from them.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, we'll update this page and the date at the top. For bigger changes, we'll also tell you in the app.</p>
+
+  <footer>Questions: <a href="mailto:jack@pedregon.com">jack@pedregon.com</a></footer>
+</main>
+</body>
+</html>
