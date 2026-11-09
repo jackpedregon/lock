@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Lock-in</title>
+<style>
+  :root {
+    --bg: #f2f4f7; --card: #ffffff; --fg: #141b24; --muted: #5b6876; --line: #dfe4ea;
+    --accent: #2f5fe0; --danger: #c93a3a; --ok: #2b8a5e;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1419; --card: #18202a; --fg: #e9eef3; --muted: #95a3b1; --line: #2a3542;
+            --accent: #7fa0ff; --danger: #f07c7c; --ok: #5dcb98; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body { background: var(--bg); color: var(--fg);
+         font: 17px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         display: flex; align-items: center; justify-content: center;
+         padding: max(24px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
+                  max(24px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); }
+  main { width: 100%; max-width: 420px; background: var(--card); border: 1px solid var(--line);
+         border-radius: 22px; padding: 28px 22px; display: flex; flex-direction: column; gap: 14px; text-align: center; }
+  .icon { font-size: 44px; line-height: 1; }
+  h1 { margin: 0; font-size: 1.5rem; line-height: 1.2; text-wrap: balance; }
+  p { margin: 0; color: var(--muted); }
+  .what { color: var(--fg); font-weight: 600; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 14px; padding: 15px 18px; width: 100%; cursor: pointer; }
+  .go { background: var(--accent); color: #fff; }
+  .danger { background: var(--danger); color: #fff; }
+  .plain { background: transparent; color: var(--muted); padding: 8px; }
+  button:disabled { opacity: .6; }
+  button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .small { font-size: .85rem; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite">
+  <div class="icon" id="icon">🔒</div>
+  <h1 id="headline">Loading…</h1>
+  <p id="detail"></p>
+  <div id="actions" style="display:flex;flex-direction:column;gap:8px"></div>
+  <p class="small" id="foot"></p>
+</main>
+
+<script>
+  // Your Supabase project. The publishable key is safe to show; it only identifies the project.
+  const FUNCTION_URL = "https://rnfkmqsxcqedpifzmqhx.supabase.co/functions/v1/friendlock";
+  const PUBLISHABLE_KEY = "sb_publishable_ZDL46eR_ZKaYns5u1oairA_wEQdkUD5";
+
+  const token = location.hash.replace(/^#/, "");
+  const $ = (id) => document.getElementById(id);
+  let info = null;
+
+  async function call(action) {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: PUBLISHABLE_KEY },
+      body: JSON.stringify({ action, token }),
+    });
+    return res.json();
+  }
+
+  function untilText(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+
+  function show(icon, headline, detail, buttons = [], foot = "") {
+    $("icon").textContent = icon;
+    $("headline").textContent = headline;
+    $("detail").textContent = detail;
+    $("foot").textContent = foot;
+    const box = $("actions");
+    box.replaceChildren();
+    for (const b of buttons) {
+      const el = document.createElement("button");
+      el.className = b.style;
+      el.textContent = b.label;
+      el.onclick = b.onClick;
+      box.appendChild(el);
+    }
+  }
+
+  const isPhone = () => /iPhone/i.test(navigator.userAgent) ||
+    (/Android/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent));
+
+  function render(data) {
+    info = data;
+    const name = data.name || "Your friend";
+    switch (data.state) {
+      case "active": {
+        const what = data.title && data.title !== "Focus time" ? `Working on “${data.title}”. ` : "";
+        show("🔒", `${name} is locked in`,
+          `${what}Until about ${untilText(data.endsAt)}.`,
+          [{ label: `Give ${name} their apps back`, style: "go", onClick: askSure }],
+          `Only tap this if ${name} really needs their phone.`);
+        if (!isPhone()) notPhone();
+        break;
+      }
+      case "unlocked_now":
+        show("🔓", `${name} is unlocked`, `Their apps are back. Thanks for being their lock friend.`);
+        break;
+      case "unlocked":
+        show("🔓", "Already unlocked", `This lock-in was already ended with this link.`);
+        break;
+      case "finished":
+        show("✅", "This lock-in is over", `${name} isn't locked in right now, so there's nothing to unlock.`);
+        break;
+      case "not_phone":
+        notPhone();
+        break;
+      default:
+        show("🤔", "This link doesn't work", "It may be mistyped or too old.");
+    }
+  }
+
+  function notPhone() {
+    const name = (info && info.name) || "your friend";
+    show("📱", "Open this on your phone",
+      `To unlock ${name}, open this link on your own phone. If you're on a phone, turn off “Request Desktop Website.”`);
+  }
+
+  function askSure() {
+    const name = info.name || "your friend";
+    const left = Math.max(0, Math.round((new Date(info.endsAt) - Date.now()) / 60000));
+    show("⚠️", `Unlock ${name}?`,
+      left > 0 ? `They have about ${left} minute${left === 1 ? "" : "s"} left. This ends their lock-in right now.` :
+                 "This ends their lock-in right now.",
+      [{ label: "Yes, unlock", style: "danger", onClick: unlock },
+       { label: "Keep them locked in", style: "plain", onClick: () => render(info) }]);
+  }
+
+  async function unlock() {
+    $("actions").querySelectorAll("button").forEach((b) => (b.disabled = true));
+    try { render(await call("unlock")); }
+    catch { show("📶", "Couldn't reach the server", "Check your connection and try again.",
+                 [{ label: "Try again", style: "go", onClick: unlock }]); }
+  }
+
+  (async () => {
+    if (!token) return render({ state: "missing" });
+    try { render(await call("view")); }
+    catch { show("📶", "Couldn't reach the server", "Check your connection and reload this page."); }
+  })();
+</script>
+</body>
+</html>
